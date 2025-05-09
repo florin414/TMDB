@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PopcornHub.Domain\PopcornHub.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CSharpFunctionalExtensions" Version="3.6.0" />
+      <PackageReference Include="Duende.IdentityServer.Storage" Version="7.2.3" />
+      <PackageReference Include="FastEndpoints.Swagger" Version="6.0.0" />
+      <PackageReference Include="TMDbLib" Version="2.2.0" />
+      <PackageReference Include="Volo.Abp.Ddd.Application" Version="8.3.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Duende.IdentityServer">
+        <HintPath>..\..\..\.nuget\packages\duende.identityserver\7.2.3\lib\net8.0\Duende.IdentityServer.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.IdentityModel.Tokens">
+        <HintPath>..\..\..\.nuget\packages\microsoft.identitymodel.tokens\7.1.2\lib\net8.0\Microsoft.IdentityModel.Tokens.dll</HintPath>
+      </Reference>
+      <Reference Include="System.IdentityModel.Tokens.Jwt">
+        <HintPath>..\..\..\.nuget\packages\system.identitymodel.tokens.jwt\7.1.2\lib\net8.0\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

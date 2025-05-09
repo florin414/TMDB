@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopcornHub.Web", "PopcornHub.Web\PopcornHub.Web.csproj", "{957A322D-7545-4B19-9DB3-E493CAF4EBBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopcornHub.Domain", "PopcornHub.Domain\PopcornHub.Domain.csproj", "{9CDBEB7D-4899-4D93-80CB-DF1931B93AF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopcornHub.Application", "PopcornHub.Application\PopcornHub.Application.csproj", "{60A3B6B1-031E-4A35-87AD-26A74FD96AD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopcornHub.Infrastructure", "PopcornHub.Infrastructure\PopcornHub.Infrastructure.csproj", "{493EF82E-D38E-4034-A495-5CA975B66933}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopcornHub.Shared", "PopcornHub.Shared\PopcornHub.Shared.csproj", "{AD18CDBE-D20A-497C-8705-79B32E85AD52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopcornHub.UnitTests", "PopcornHub.UnitTests\PopcornHub.UnitTests.csproj", "{148E106D-079D-4C26-8167-4FC9CD841418}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopcornHub.IntegrationTests", "PopcornHub.IntegrationTests\PopcornHub.IntegrationTests.csproj", "{0A05D65B-A27C-4864-BA65-642892B3418B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{957A322D-7545-4B19-9DB3-E493CAF4EBBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{957A322D-7545-4B19-9DB3-E493CAF4EBBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{957A322D-7545-4B19-9DB3-E493CAF4EBBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{957A322D-7545-4B19-9DB3-E493CAF4EBBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CDBEB7D-4899-4D93-80CB-DF1931B93AF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CDBEB7D-4899-4D93-80CB-DF1931B93AF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CDBEB7D-4899-4D93-80CB-DF1931B93AF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CDBEB7D-4899-4D93-80CB-DF1931B93AF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60A3B6B1-031E-4A35-87AD-26A74FD96AD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60A3B6B1-031E-4A35-87AD-26A74FD96AD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60A3B6B1-031E-4A35-87AD-26A74FD96AD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60A3B6B1-031E-4A35-87AD-26A74FD96AD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{493EF82E-D38E-4034-A495-5CA975B66933}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{493EF82E-D38E-4034-A495-5CA975B66933}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{493EF82E-D38E-4034-A495-5CA975B66933}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{493EF82E-D38E-4034-A495-5CA975B66933}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD18CDBE-D20A-497C-8705-79B32E85AD52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD18CDBE-D20A-497C-8705-79B32E85AD52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD18CDBE-D20A-497C-8705-79B32E85AD52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD18CDBE-D20A-497C-8705-79B32E85AD52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{148E106D-079D-4C26-8167-4FC9CD841418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{148E106D-079D-4C26-8167-4FC9CD841418}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{148E106D-079D-4C26-8167-4FC9CD841418}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{148E106D-079D-4C26-8167-4FC9CD841418}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A05D65B-A27C-4864-BA65-642892B3418B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A05D65B-A27C-4864-BA65-642892B3418B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A05D65B-A27C-4864-BA65-642892B3418B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A05D65B-A27C-4864-BA65-642892B3418B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

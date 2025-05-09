@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FastEndpoints" Version="6.0.0" />
+      <PackageReference Include="FastEndpoints.Attributes" Version="6.0.0" />
+      <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="8.3.4" />
+      <PackageReference Include="Volo.Abp.Ddd.Domain" Version="8.3.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="CSharpFunctionalExtensions">
+        <HintPath>..\..\..\.nuget\packages\csharpfunctionalextensions\3.6.0\lib\net8.0\CSharpFunctionalExtensions.dll</HintPath>
+      </Reference>
+      <Reference Include="TMDbLib">
+        <HintPath>..\..\..\.nuget\packages\tmdblib\2.2.0\lib\netstandard2.1\TMDbLib.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ValueObjects\" />
+    </ItemGroup>
+
+</Project>
