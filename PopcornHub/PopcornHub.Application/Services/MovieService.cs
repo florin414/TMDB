@@ -1,134 +1,148 @@
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using PopcornHub.Domain.DTOs.Movies;
+using PopcornHub.Application.EntityMapping;
+using PopcornHub.Application.IServices;
+using PopcornHub.Application.Strategies;
+using PopcornHub.Domain;
+using PopcornHub.Domain.DTOs.Movie;
 using PopcornHub.Domain.IServices;
-using TMDbLib.Client;
-using TMDbLib.Objects.Discover;
-using TMDbLib.Objects.General;
-using TMDbLib.Objects.Movies;
+using PopcornHub.Domain.Models.Movie;
+using PopcornHub.Shared.Constants;
 using TMDbLib.Objects.Search;
 
 namespace PopcornHub.Application.Services;
 
 public class MovieService : IMovieService
 {
-    private readonly TMDbClient _client;
     private readonly ILogger<MovieService> _logger;
+    private readonly IMovieExistenceChecker _movieExistenceChecker;
+    private readonly IMovieApiClient _movieApiClient;
 
-    public MovieService(ILogger<MovieService> logger, TMDbClient client)
+    public MovieService(ILogger<MovieService> logger, IMovieExistenceChecker movieExistenceChecker, IMovieApiClient movieApiClient)
     {
         _logger = logger;
-        _client = client;
+        _movieExistenceChecker = movieExistenceChecker;
+        _movieApiClient = movieApiClient;
     }
     
-    public async Task<Result<MovieGenresResponse>> GetMovieGenresAsync()
+    public async Task<Result<MovieGenresModel>> GetMovieGenresAsync()
     {
         try
         {
-            List<Genre> genres = await _client.GetMovieGenresAsync();
+            var genres = await _movieApiClient.GetMovieGenresAsync();
             
-            return Result.Success(new MovieGenresResponse
+            return Result.Success(new MovieGenresModel
             {
-                Genres = genres,
+                Genres = genres
             });
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            _logger.LogError(e, "Error during GetMovieGenresAsync");
+            _logger.LogError(ex, "An error occurred while fetching movie genres in GetMovieGenresAsync. External client may be unreachable or returned invalid data.");
 
-            return Result.Failure<MovieGenresResponse>("Failed to fetch movie genres");
+            return Result.Failure<MovieGenresModel>(MovieFailureCodes.FailedToFetchMovieGenres);
         }
     }
 
-    public async Task<Result<MovieCreditsResponse>> GetMovieCreditsAsync(MovieCreditsRequest request)
+    public async Task<Result<MovieCreditsModel>> GetMovieCreditsAsync(MovieCreditsModel model)
     {
         try
         {
-            Credits credits = await _client.GetMovieCreditsAsync(request.MovieId);
-            
-            return Result.Success(new MovieCreditsResponse
+            var movieExists = await _movieExistenceChecker.ExistsAsync(model.MovieId);
+            if (!movieExists)
             {
-                Credits = credits,
-            });
+                return Result.Failure<MovieCreditsModel>(MovieFailureCodes.MovieNotFound); 
+            }
+            
+            var credits = await _movieApiClient.GetMovieCreditsAsync(model.MovieId.Value);
+            
+            model.Credits = credits;
+            
+            return Result.Success(model);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            _logger.LogError(e, "Error during GetMovieDetailsAsync");
+            _logger.LogError(ex, "An error occurred while fetching movie credits for MovieId={MovieId}", model.MovieId);
 
-            return Result.Failure<MovieCreditsResponse>("Failed to fetch movie details");
+            return Result.Failure<MovieCreditsModel>(MovieFailureCodes.FailedToFetchMovieCredits);
         }
     }
     
-    public async Task<Result<SearchMoviesResponse>> SearchMoviesAsync(SearchMoviesRequest request)
+    public async Task<Result<GetMoviesModel>> GetMoviesAsync(MoviesModel model)
     {
         try
         {
-            List<SearchMovie> movies = [];
+            List<MovieDto> movies = [];
+            
+            if (!string.IsNullOrWhiteSpace(model.Name) && !string.IsNullOrWhiteSpace(model.Genre))
+            {
+                movies = await _movieApiClient.SearchMovieByGenreListAsync(model.Name, model.Genre);
+            }
+            
+            if (!string.IsNullOrWhiteSpace(model.Genre))
+            {
+                movies = await _movieApiClient.GetMoviesGenresListAsync(model.Genre);
+            }
+            
+            if (!string.IsNullOrWhiteSpace(model.Name))
+            {
+                movies = await _movieApiClient.SearchMovieAsync(model.Name);
+            }
 
-            // filter 
-            if (!string.IsNullOrEmpty(request.Name) && !string.IsNullOrEmpty(request.Genre))
+            var hasFilters = !string.IsNullOrWhiteSpace(model.Name) || !string.IsNullOrWhiteSpace(model.Genre);
+            
+            if (movies.Count != 0 && hasFilters)
             {
-                SearchContainer<SearchMovie> searchMovies = await _client.SearchMovieAsync(request.Name);
-                List<Genre> genres = await _client.GetMovieGenresAsync();
-                int genreId = genres.First(g => g.Name == request.Genre).Id;
-                List<SearchMovie> filtredMovieByNameAndGenre = searchMovies
-                    .Results
-                    .Where(m => m.GenreIds.Contains(genreId))
-                    .ToList();
-                
-                movies.AddRange(filtredMovieByNameAndGenre);
-            }
-            else if (!string.IsNullOrEmpty(request.Name))
-            {
-                SearchContainer<SearchMovie> searchMovies = await _client.SearchMovieAsync(request.Name);
-                movies.AddRange(searchMovies.Results);
-            }
-            else if (!string.IsNullOrEmpty(request.Genre))
-            {
-                List<Genre> genres = await _client.GetMovieGenresAsync();
-                Genre? genre = genres.FirstOrDefault(g => g.Name == request.Genre);
-                
-                if (genre != null)
-                {
-                    DiscoverMovie discoverMovie = _client.DiscoverMoviesAsync().IncludeWithAllOfGenre([genre]);
-                    SearchContainer<SearchMovie> searchMovies = discoverMovie.Query().Result;
-                    movies.AddRange(searchMovies.Results);
-                }
+                movies = SortMovies(movies, model.SortBy);
             }
             
-            // sort
-            
-            if (request.Latest || request.Top)
+            if(movies.Count == 0 && !hasFilters)
             {
-                IOrderedEnumerable<SearchMovie>? sorted = null;
+                movies = await GetFallbackMoviesAsync(_movieApiClient, model.SortBy!);
+            }
+            
+            var paginatedMovies = movies
+                .Skip((model.Page - 1) * model.PageSize)
+                .Take(model.PageSize)
+                .ToList();
 
-                if (request.Top)
-                {
-                    sorted = sorted == null
-                        ? movies.OrderByDescending(m => m.VoteAverage)
-                        : sorted.ThenByDescending(m => m.VoteAverage);
-                }
-                if (request.Latest)
-                {
-                    sorted = sorted == null
-                        ? movies.OrderByDescending(m => m.ReleaseDate)
-                        : sorted.ThenByDescending(m => m.ReleaseDate);
-                }
-                
-                if (sorted != null)
-                    movies = sorted.ToList();
-            }
-            
-            return Result.Success(new SearchMoviesResponse
+            return Result.Success(new GetMoviesModel
             {
-                Movies = movies,
+                Movies = paginatedMovies,
+                Page = model.Page,
+                PageSize = model.PageSize,
+                TotalCount = movies.Count 
             });
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Error during SearchMoviesAsync");
 
-            return Result.Failure<SearchMoviesResponse>("Failed to fetch movies filtred my name and genres");
+            return Result.Failure<GetMoviesModel>("Failed to fetch movies filtred my name and genres");
         }
+    }
+    
+    private static List<MovieDto> SortMovies(List<MovieDto> movies, string? sortBy)
+    {
+        if (string.IsNullOrEmpty(sortBy))
+            return movies;
+
+        var sortStrategy = MovieSortStrategyFactory.Create(sortBy);
+        var sortedMovies = sortStrategy.ExecuteStrategy(movies).ToList();
+
+        return sortedMovies;
+    }
+    
+    private static async Task<List<MovieDto>> GetFallbackMoviesAsync(IMovieApiClient client, string sortBy)
+    {
+        if (!sortBy.Contains(MovieSortCriteria.LatestReleased))
+        {
+            if (!sortBy.Contains(MovieSortCriteria.TopRated)) return [];
+            var topMovies = await client.GetMovieTopRatedListAsync();
+            return topMovies;
+        }
+
+        var result = await client.GetMovieLatestReleasedListAsync();
+        return result;
     }
 }

@@ -14,5 +14,5 @@ public sealed class MoviesGroup : Group
                     .WithTags("Movies");
             });
         });
-    }
+     }
 }

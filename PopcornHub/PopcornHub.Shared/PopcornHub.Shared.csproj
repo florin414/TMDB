@@ -7,6 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Reference Include="BouncyCastle.Cryptography">
+        <HintPath>..\..\..\.nuget\packages\bouncycastle.cryptography\2.5.1\lib\net6.0\BouncyCastle.Cryptography.dll</HintPath>
+      </Reference>
+      <Reference Include="CSharpFunctionalExtensions">
+        <HintPath>..\..\..\.nuget\packages\csharpfunctionalextensions\3.6.0\lib\net8.0\CSharpFunctionalExtensions.dll</HintPath>
+      </Reference>
       <Reference Include="FastEndpoints.Attributes">
         <HintPath>..\..\..\.nuget\packages\fastendpoints.attributes\6.0.0\lib\netstandard2.0\FastEndpoints.Attributes.dll</HintPath>
       </Reference>
@@ -19,14 +25,13 @@
       <Reference Include="Swashbuckle.AspNetCore.SwaggerGen">
         <HintPath>..\..\..\.nuget\packages\swashbuckle.aspnetcore.swaggergen\6.6.2\lib\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll</HintPath>
       </Reference>
+      <Reference Include="TMDbLib">
+        <HintPath>..\..\..\.nuget\packages\tmdblib\2.2.0\lib\netstandard2.1\TMDbLib.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\PopcornHub.Domain\PopcornHub.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Utils\" />
     </ItemGroup>
 
 </Project>

@@ -1,0 +1,8 @@
+.dropdownContainer {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(2, 300px);
+  grid-template-rows: repeat(1, 100px);
+  gap: 20px;
+  margin-left: 20px;
+}

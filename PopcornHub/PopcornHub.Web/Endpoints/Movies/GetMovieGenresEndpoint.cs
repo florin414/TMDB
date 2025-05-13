@@ -1,10 +1,9 @@
-using System.Net;
 using CSharpFunctionalExtensions.ValueTasks;
 using FastEndpoints;
-using PopcornHub.Domain.DTOs;
+using PopcornHub.Application.IServices;
 using PopcornHub.Domain.DTOs.ApiError;
-using PopcornHub.Domain.DTOs.Movies;
-using PopcornHub.Domain.IServices;
+using PopcornHub.Domain.DTOs.Movie;
+using PopcornHub.Web.DomainMappings.Movie;
 
 namespace PopcornHub.Web.Endpoints.Movies;
 
@@ -24,10 +23,10 @@ public class GetMovieGenresEndpoint : EndpointWithoutRequest<MovieGenresResponse
         AllowAnonymous();
         Summary(s =>
         {
-            s.Summary = "Search movies by name and/or genre.";
-            s.Description = "Returns movies that match the provided name and/or genre.";
-            s.Response<MovieGenresResponse>(200, "Credits found"); 
-            s.Response<ApiErrorResponse>(400, "Bad request");
+            s.Summary = "Retrieve all movie genres.";
+            s.Description = "Returns a list of all available movie genres from the database.";
+            s.Response<MovieGenresResponse>(StatusCodes.Status200OK, "List of genres retrieved successfully");
+            s.Response<ApiErrorResponse>(StatusCodes.Status400BadRequest, "Invalid request or data retrieval failed");
         });
     }
 
@@ -35,10 +34,9 @@ public class GetMovieGenresEndpoint : EndpointWithoutRequest<MovieGenresResponse
     {
         var result = await _movieService.GetMovieGenresAsync();
         
-        // MapToResponse
         await result.Match(
-            async success => await SendOkAsync(success, ct), 
-            async error => await SendErrorsAsync((int)HttpStatusCode.BadRequest, ct)
+            async success => await SendOkAsync(success.ToResponse(), ct), 
+            async error => await SendErrorsAsync(StatusCodes.Status400BadRequest, ct)
         );
     }   
 }

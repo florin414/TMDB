@@ -31,7 +31,11 @@ public class GlobalErrorHandlingMiddleware : IMiddleware
                 _ => (StatusCodes.Status500InternalServerError, "An unexpected error occurred.")
             };
 
-            var errorResponse = new ApiErrorResponse(statusCode, message);
+            var errorResponse = new ApiErrorResponse
+            {
+                StatusCode = statusCode,
+                Error = ex.Message,
+            };
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = statusCode;

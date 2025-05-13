@@ -1,15 +1,10 @@
-using Volo.Abp.Application.Dtos;
+using PopcornHub.Domain.Common;
 
 namespace PopcornHub.Domain.DTOs.ApiError;
 
-public class ApiErrorResponse : EntityDto
+public class ApiErrorResponse
 {
-    public int StatusCode { get; set; }
-    public string Error { get; set; }
-
-    public ApiErrorResponse(int statusCode, string error)
-    {
-        StatusCode = statusCode;
-        Error = error;
-    }
+    public int StatusCode { get; init; }
+    
+    public string Error { get; init; }
 }

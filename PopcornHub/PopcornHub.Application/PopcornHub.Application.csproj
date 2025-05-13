@@ -8,19 +8,29 @@
 
     <ItemGroup>
       <ProjectReference Include="..\PopcornHub.Domain\PopcornHub.Domain.csproj" />
+      <ProjectReference Include="..\PopcornHub.Infrastructure\PopcornHub.Infrastructure.csproj" />
+      <ProjectReference Include="..\PopcornHub.Shared\PopcornHub.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="BouncyCastle.Cryptography" Version="2.5.1" />
       <PackageReference Include="CSharpFunctionalExtensions" Version="3.6.0" />
-      <PackageReference Include="Duende.IdentityServer.Storage" Version="7.2.3" />
       <PackageReference Include="FastEndpoints.Swagger" Version="6.0.0" />
       <PackageReference Include="TMDbLib" Version="2.2.0" />
-      <PackageReference Include="Volo.Abp.Ddd.Application" Version="8.3.4" />
     </ItemGroup>
 
     <ItemGroup>
       <Reference Include="Duende.IdentityServer">
         <HintPath>..\..\..\.nuget\packages\duende.identityserver\7.2.3\lib\net8.0\Duende.IdentityServer.dll</HintPath>
+      </Reference>
+      <Reference Include="FastEndpoints.Security">
+        <HintPath>..\..\..\.nuget\packages\fastendpoints.security\5.35.0\lib\net8.0\FastEndpoints.Security.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.EntityFrameworkCore">
+        <HintPath>..\..\..\.nuget\packages\microsoft.entityframeworkcore\8.0.15\lib\net8.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.IdentityModel.JsonWebTokens">
+        <HintPath>..\..\..\.nuget\packages\microsoft.identitymodel.jsonwebtokens\7.1.2\lib\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
       </Reference>
       <Reference Include="Microsoft.IdentityModel.Tokens">
         <HintPath>..\..\..\.nuget\packages\microsoft.identitymodel.tokens\7.1.2\lib\net8.0\Microsoft.IdentityModel.Tokens.dll</HintPath>

@@ -17,6 +17,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\PopcornHub.Domain\PopcornHub.Domain.csproj" />
+      <ProjectReference Include="..\PopcornHub.Shared\PopcornHub.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -25,6 +26,9 @@
       </Reference>
       <Reference Include="Npgsql.EntityFrameworkCore.PostgreSQL">
         <HintPath>..\..\..\.nuget\packages\npgsql.entityframeworkcore.postgresql\8.0.11\lib\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll</HintPath>
+      </Reference>
+      <Reference Include="TMDbLib">
+        <HintPath>..\..\..\.nuget\packages\tmdblib\2.2.0\lib\netstandard2.1\TMDbLib.dll</HintPath>
       </Reference>
     </ItemGroup>
 

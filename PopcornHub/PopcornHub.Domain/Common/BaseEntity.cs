@@ -1,6 +1,6 @@
 namespace PopcornHub.Domain.Common;
 
-public abstract class BaseEntity
+public abstract class BaseEntity<TId> where TId : struct
 {
-    public int Id { get; protected set; }
+    public TId Id { get; protected set; }
 }

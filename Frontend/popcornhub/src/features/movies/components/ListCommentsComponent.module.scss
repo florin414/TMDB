@@ -1,0 +1,44 @@
+.commentInputContainer {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 16px;
+    background-color: rgb(25, 25, 25);
+    color: white;
+    margin-bottom: 20px;
+    padding-bottom: 60px;
+    position: relative; 
+}
+
+.commentBox {
+    width: 100%;
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 16px;
+    background-color: rgb(25, 25, 25);
+    color: white;
+}
+
+.commentActions {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.textField {
+    width: 100%;
+}
+
+.buttonsContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+.buttonOutlined {
+    margin: 0 8px;
+}

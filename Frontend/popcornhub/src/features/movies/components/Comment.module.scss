@@ -1,0 +1,14 @@
+.comment {
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.commentContent {
+    background: #f2f2f2;
+    border-radius: 8px;
+    padding: 10px;
+    color: black;
+    max-width: 500px; 
+}

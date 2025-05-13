@@ -1,55 +1,37 @@
-using System.Security.Claims;
-using Duende.IdentityModel;
-using Duende.IdentityServer.Models;
-using Duende.IdentityServer.Services;
+using CSharpFunctionalExtensions;
+using FastEndpoints.Security;
+using Microsoft.Extensions.Configuration;
+using PopcornHub.Application.IServices;
 using PopcornHub.Domain.Entities;
-using ITokenService = PopcornHub.Domain.IServices.ITokenService;
+using PopcornHub.Shared.Configurations;
 
 namespace PopcornHub.Application.Services;
-
 public class TokenService : ITokenService
 {
-    private readonly IIdentityServerInteractionService _identityServerInteractionService;
-    private readonly ITokenCreationService _tokenCreationService;  // Pentru generarea tokenurilor
-    private const string AccessToken = "access_token";
-    private const string RefreshToken = "refresh_token";
+    private readonly IConfigurationService _config;
 
-    public TokenService(IIdentityServerInteractionService identityServerInteractionService, ITokenCreationService tokenCreationService)
+    public TokenService(IConfigurationService config)
     {
-        _identityServerInteractionService = identityServerInteractionService;
-        _tokenCreationService = tokenCreationService;
+        _config = config;
     }
 
-    public async Task<string> GenerateJwtTokenAsync(User user)
+    public Result<string> GenerateToken(User user)
     {
-        // Generăm un JWT token folosind IdentityServer sau un serviciu intern.
-        var accessTokenResult = await _tokenCreationService.CreateTokenAsync(GenerateToken(user, AccessToken));
-        return accessTokenResult;
-    }
-
-    public async Task<string> GenerateRefreshTokenAsync(User user)
-    {
-        // Generăm refresh token folosind IdentityServer sau un serviciu intern.
-        var accessTokenResult = await _tokenCreationService.CreateTokenAsync(GenerateToken(user, RefreshToken));
-        return accessTokenResult;
-    }
-
-    private Token GenerateToken(User user, string tokenTypes)
-    {
-        // Creăm un obiect Token cu detalii despre utilizator, client și scope
-        var token = new Token
+        try
         {
-            ClientId = "google-client",  // ID-ul clientului configurat în IdentityServer
-            Issuer = "PopcornHub",  // Numele sau ID-ul issuer-ului
-            Lifetime = tokenTypes == AccessToken ? 3600 : 36000,  // Durata de viață a tokenului în secunde (1 oră)
-            Claims = new HashSet<Claim>
+            var token = JwtBearer.CreateToken(options =>
             {
-                new Claim(JwtClaimTypes.Subject, user.Id.ToString()),
-                new Claim(JwtClaimTypes.Email, user.Email)
-            },
-            Type = tokenTypes,
-            IncludeJwtId = true  // Include un ID unic pentru token
-        };
-        return token;
+                options.SigningKey = _config.JwtSettings.SigningKey;
+                options.ExpireAt = DateTime.UtcNow.AddDays(7);
+                options.User["UserId"] = user.Id.ToString();
+                options.User["UserName"] = user.UserName;
+            });
+
+            return Result.Success(token);
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure<string>($"Token generation failed: {ex.Message}");
+        }
     }
 }

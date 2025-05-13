@@ -1,0 +1,43 @@
+.movie {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.listMovieContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card {
+    display: flex;
+    margin-bottom: 16px;
+    max-width: 100%;
+}
+
+.imageBox {
+    cursor: pointer;
+    width: 200px;
+    flex-shrink: 0;
+}
+
+.contentBox {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 16px;
+}
+
+.actorsList {
+    padding-left: 16px;
+    margin: 0;
+}
+
+.actorItem {
+    list-style: none;
+}
+
+.actorName {
+    font-size: 14px;
+}
