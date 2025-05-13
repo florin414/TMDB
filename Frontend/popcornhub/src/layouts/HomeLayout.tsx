@@ -6,7 +6,7 @@ const HomeLayout: React.FC = () => {
       <div>
         <TopNavbar />
         <main>
-          <Outlet />ss
+          <Outlet />
         </main>
       </div>
     );
